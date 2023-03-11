@@ -11,9 +11,9 @@ class Validator:
     
     def Accuracy(self):
         accuracy = 0
-        df = self.dataset.iloc[:,1:]
+        df = self.dataset
         df = df.iloc[:,self.feature_subset]
-
+        print(df)
         for i in range(0,len(df.iloc[:,0])):
             #get slice from 0->index and index+1->end
             n = df.index.isin([i])
@@ -84,12 +84,14 @@ def ForwardSelection(features,df):
     features_len = features.len() # Number of features
     #use feature size to start from 1, select 1 features, then next
     #to select that many features, permutate by
+    labels = df.iloc[:,0] #preserve labels
+    df = df #ive made a terrible mistake
     greedy_features = Node([],features.dataset)
     remaining_features = copy.deepcopy(features)
     curr_best = 0 
     for i in range(1,features_len+1):
         #current best is greedy features evaluation
-        
+        #i need to remove the 0 that got in there somehow but like keep the labels
         start_len = greedy_features.len()
         #use same feature set for i+1 features
         loop_features = copy.deepcopy(greedy_features)
