@@ -43,6 +43,8 @@ class Classifier:
         # print(test_instance)
         # print(self.train_instances)
         for instance in self.train_instances.iterrows():
+            # print(instance)
+            
             dist = self.Euclidean_Distance(instance,test_instance)
             if dist < small:
                 small = dist
@@ -52,8 +54,9 @@ class Classifier:
     def Euclidean_Distance(self,one,two):
         #for each x y do (x-y) squared added then sqrt
         sum = 0
-        # print(list(one[1]))
-        # print(list(two))
+        # print(one)
+        # print(two)
+        # print(one)
         for (x,y) in zip(list(one[1]),list(two)):
             sum += (x-y)**2 
         return (sum**.5)
@@ -86,7 +89,7 @@ class Node:
         return f"{self.features}"
 
 def ForwardSelection(features,df):
-    features.remove(0)
+    # features.remove(0)
     features_len = features.len() # Number of features
     #use feature size to start from 1, select 1 features, then next
     #to select that many features, permutate by
@@ -138,6 +141,7 @@ def BackwardElimination(features,df):
     for i in range(1,features_len+2):
         v = Validator(greedy_features.features,Classifier(labels),df)
         curr_best = greedy_features.Evaluate(v)
+        print(f"Initial set accuracy of all features is {curr_best}")
         start_len = greedy_features.len()
         loop_features = copy.deepcopy(greedy_features)
         for feature in loop_features.features:
@@ -174,17 +178,19 @@ def main(feature_set,dataset):
         BackwardElimination(feature_set,dataset)
 
 def datainput():
-    # dataset_path = 'CS170_Spring_2022_Small_data__39.txt' 
-    dataset_path = 'CS170_Spring_2022_Large_data__39.txt'
+    dataset_path = 'CS170_Spring_2022_Small_data__39.txt' 
+    # dataset_path = 'CS170_Spring_2022_Large_data__39.txt'
+    # dataset_path = 'small-test-dataset.txt'
+    # dataset_path = 'Large-test-dataset.txt'
+
+    print (f'Using dataset {dataset_path}')
     data = []
     with open(dataset_path,'r') as f:
         for line in f:
             str_vals = line.strip().split()
-            # label = int(float(str_vals[0]))
             vals = []
             for val in str_vals:
                 vals.append(float(val))
-            # temp = [label,vals]
             data.append(vals)
     import pandas as pd
     df = pd.DataFrame(data)
